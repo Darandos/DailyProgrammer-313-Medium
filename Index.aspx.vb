@@ -15,7 +15,7 @@ Public Class Index_aspx
             Exit Sub
         End Try
 
-        Dim reader As StringReader = New StringReader(SimplifyOperations(Operations.Value))
+        Dim reader As StringReader = New StringReader(SimplifyOperations(Operations.Value.ToUpper()))
         Dim numTransformations As Integer = 0
         While reader.Peek <> -1
             Select Case Convert.ToChar(reader.Read())

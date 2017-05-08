@@ -15,8 +15,6 @@
         Transformations performed: <asp:Label ID="NumTransformationsLabel" runat="server"></asp:Label>
     </form>
 
-    
-
     <textarea cols="80" rows="30" id="Results" runat="server"></textarea>
 </body>
 
