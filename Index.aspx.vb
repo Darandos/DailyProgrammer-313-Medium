@@ -16,6 +16,7 @@ Public Class Index_aspx
         End Try
 
         Dim reader As StringReader = New StringReader(SimplifyOperations(Operations.Value))
+        Dim numTransformations As Integer = 0
         While reader.Peek <> -1
             Select Case Convert.ToChar(reader.Read())
                 Case "R"c
@@ -27,6 +28,7 @@ Public Class Index_aspx
                 Case "V"c
                     pixels = FlipVertical(pixels)
             End Select
+            numTransformations += 1
         End While
 
         Dim output As New StringBuilder()
@@ -35,6 +37,7 @@ Public Class Index_aspx
             output.AppendLine(CStr(pixel))
         Next
         Results.InnerText = output.ToString()
+        NumTransformationsLabel.Text = CStr(numTransformations)
     End Sub
 
     Private Function ParsePgm(pgm As String, Optional ByRef max As Integer = 0) As Integer(,)
