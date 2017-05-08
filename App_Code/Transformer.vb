@@ -89,6 +89,26 @@
         Return Transform(pixels, mapPixelNegative, maxPixelValue:=maxPixelValue)
     End Function
 
+    Public Function Brighten(pixels As Integer(,)) As Integer(,)
+        Dim mapPixelBrighten As MapPixel =
+            Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer,
+                     lMaxPixelValue As Integer) As Integer
+                Return lPixels(y, x) + 10
+            End Function
+
+        Return Transform(pixels, mapPixelBrighten)
+    End Function
+
+    Public Function Darken(pixels As Integer(,)) As Integer(,)
+        Dim mapPixelDarken As MapPixel =
+            Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer,
+                     lMaxPixelValue As Integer) As Integer
+                Return lPixels(y, x) - 10
+            End Function
+
+        Return Transform(pixels, mapPixelDarken)
+    End Function
+
     Private Function Transform(pixels As Integer(,),
                                callback As MapPixel,
                                Optional xSize As Integer = 0,
