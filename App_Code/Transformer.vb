@@ -3,7 +3,7 @@
         Dim mapPixelRotateClockwise As MapPixel =
             Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer) _
             As Integer
-                Return pixels(xSize - x - 1, y)
+                Return lPixels(xSize - x - 1, y)
             End Function
 
         Dim newXSize As Integer = pixels.GetLength(0)
@@ -16,7 +16,7 @@
         Dim mapPixelRotateCounterClockwise As MapPixel =
             Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer) _
             As Integer
-                Return pixels(x, ySize - y - 1)
+                Return lPixels(x, ySize - y - 1)
             End Function
 
         Dim newXSize As Integer = pixels.GetLength(0)
@@ -29,7 +29,7 @@
         Dim mapPixelFlipHorizontal As MapPixel =
             Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer) _
             As Integer
-                Return pixels(y, xSize - x - 1)
+                Return lPixels(y, xSize - x - 1)
             End Function
 
         Return Transform(pixels, mapPixelFlipHorizontal)
@@ -39,7 +39,7 @@
         Dim mapPixelFlipVertical As MapPixel =
             Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer) _
             As Integer
-                Return pixels(ySize - y - 1, x)
+                Return lPixels(ySize - y - 1, x)
             End Function
 
         Return Transform(pixels, mapPixelFlipVertical)
@@ -53,6 +53,21 @@
             End Function
 
         Return Transform(pixels, mapPixelEnlarge, pixels.GetLength(1) * 2 - 1, pixels.GetLength(0) * 2 - 1)
+    End Function
+
+    Public Function Shrink(pixels As Integer(,)) As Integer(,)
+        Dim mapPixelShrink As MapPixel =
+            Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer) _
+            As Integer
+                Dim sum As Integer = lPixels(y * 2, x * 2)
+                sum += lPixels(y * 2 + 1, x * 2)
+                sum += lPixels(y * 2, x * 2 + 1)
+                sum += lPixels(y * 2 + 1, x * 2 + 1)
+
+                Return sum \ 4
+            End Function
+
+        Return Transform(pixels, mapPixelShrink, pixels.GetLength(1) \ 2 - 1, pixels.GetLength(0) \ 2 - 1)
     End Function
 
     Private Function Transform(pixels As Integer(,),
