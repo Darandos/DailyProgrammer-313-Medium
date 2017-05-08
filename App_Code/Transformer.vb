@@ -109,6 +109,28 @@
         Return Transform(pixels, mapPixelDarken)
     End Function
 
+    Public Function IncreaseContrast(pixels As Integer(,), maxPixelValue As Integer) As Integer(,)
+        Dim mapPixelIncreaseContrast As MapPixel =
+            Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer,
+                     lMaxPixelValue As Integer) As Integer
+                If lMaxPixelValue = 0 Then
+                    Throw New ArgumentNullException("lMaxPixelValue")
+                End If
+
+                Dim halfMax As Decimal = maxPixelValue / 2
+                Dim newPixel As Integer = (lPixels(y, x) - halfMax) * 1.1 + halfMax
+                If newPixel < 0 Then
+                    newPixel = 0
+                ElseIf newPixel > maxPixelValue Then
+                    newPixel = maxPixelValue
+                End If
+
+                Return Math.Round(newPixel)
+            End Function
+
+        Return Transform(pixels, mapPixelIncreaseContrast)
+    End Function
+
     Private Function Transform(pixels As Integer(,),
                                callback As MapPixel,
                                Optional xSize As Integer = 0,
