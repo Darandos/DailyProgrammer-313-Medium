@@ -52,7 +52,10 @@
                 Return lPixels(y \ 2, x \ 2)
             End Function
 
-        Return Transform(pixels, mapPixelEnlarge, pixels.GetLength(1) * 2 - 1, pixels.GetLength(0) * 2 - 1)
+        Dim newXSize As Integer = pixels.GetLength(1) * 2 - 1
+        Dim newYSize As Integer = pixels.GetLength(0) * 2 - 1
+
+        Return Transform(pixels, mapPixelEnlarge, newXSize, newYSize)
     End Function
 
     Public Function Shrink(pixels As Integer(,)) As Integer(,)
@@ -67,7 +70,10 @@
                 Return sum \ 4
             End Function
 
-        Return Transform(pixels, mapPixelShrink, pixels.GetLength(1) \ 2 - 1, pixels.GetLength(0) \ 2 - 1)
+        Dim newXSize As Integer = pixels.GetLength(1) \ 2 - 1
+        Dim newYSize As Integer = pixels.GetLength(0) \ 2 - 1
+
+        Return Transform(pixels, mapPixelShrink, newXSize, newYSize)
     End Function
 
     Private Function Transform(pixels As Integer(,),
