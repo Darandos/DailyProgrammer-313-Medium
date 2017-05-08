@@ -39,6 +39,10 @@
     End Property
 
     Sub New()
+        For i As Integer = 0 To _transformationTable.Length - 1
+            _transformationTable(i) = New Dictionary(Of Char, State)
+        Next
+
         _transformationTable(State.Original).Item("R"c) = State.R
         _transformationTable(State.Original).Item("L"c) = State.L
         _transformationTable(State.Original).Item("H"c) = State.H
