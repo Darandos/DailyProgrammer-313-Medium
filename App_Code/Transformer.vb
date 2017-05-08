@@ -45,6 +45,16 @@
         Return Transform(pixels, mapPixelFlipVertical)
     End Function
 
+    Public Function Enlarge(pixels As Integer(,)) As Integer(,)
+        Dim mapPixelEnlarge As MapPixel =
+            Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer) _
+            As Integer
+                Return lPixels(y \ 2, x \ 2)
+            End Function
+
+        Return Transform(pixels, mapPixelEnlarge, pixels.GetLength(1) * 2 - 1, pixels.GetLength(0) * 2 - 1)
+    End Function
+
     Private Function Transform(pixels As Integer(,),
                                callback As MapPixel,
                                Optional xSize As Integer = 0,
@@ -66,6 +76,6 @@
     Private Delegate Function MapPixel(pixels As Integer(,),
                                        y As Integer,
                                        x As Integer,
-                                       ysize As Integer,
+                                       ySize As Integer,
                                        xSize As Integer) As Integer
 End Module
