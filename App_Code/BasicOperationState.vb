@@ -3,7 +3,7 @@
     Private _currentState As State = State.Original
     Private _transformationTable(System.Enum.GetNames(GetType(State)).Length - 1) As Dictionary(Of Char, State)
 
-    Friend Property CurrentState() As State
+    Public Property CurrentState() As State
         Get
             Return _currentState
         End Get
@@ -12,7 +12,7 @@
         End Set
     End Property
 
-    Friend ReadOnly Property OperationString() As String
+    Public ReadOnly Property OperationString() As String
         Get
             Dim result As String = String.Empty
             Select Case _currentState
@@ -80,7 +80,7 @@
         _transformationTable(State.RV).Item("V"c) = State.R
     End Sub
 
-    Friend Sub Transform(operation As Char)
+    Public Sub Transform(operation As Char)
         Try
             _currentState = _transformationTable(_currentState).Item(operation)
         Catch ex As KeyNotFoundException

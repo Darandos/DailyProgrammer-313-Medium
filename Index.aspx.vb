@@ -1,11 +1,10 @@
 ﻿Option Strict On
 
-Imports System
 Imports System.IO
-Imports System.Text
 
 Public Class Index_aspx
-    Inherits Web.UI.Page
+    Inherits Page
+
     Protected Sub Submit_Click(sender As Object, e As EventArgs) Handles Submit.Click
         Dim pixels As Integer(,)
         Dim maxPixelValue As Integer
@@ -16,7 +15,7 @@ Public Class Index_aspx
             Exit Sub
         End Try
 
-        Dim reader As StringReader = New StringReader(Operations.Value)
+        Dim reader As StringReader = New StringReader(SimplifyOperations(Operations.Value))
         While reader.Peek <> -1
             Select Case Convert.ToChar(reader.Read())
                 Case "R"c
@@ -62,15 +61,15 @@ Public Class Index_aspx
         Return result
     End Function
 
-    'Private Function SimplifyOperations(operations As String) As String
-    '    Dim result As String = String.Copy(operations)
-    '    Dim regex As New RegularExpressions.Regex("") ' XXX Continue here
-    '    While True
-    '        If result.Contains( Then
-    '    End While
+    Private Function SimplifyOperations(operations As String) As String
+        Dim reader As StringReader = New StringReader(operations)
+        Dim stateMachine As New BasicOperationState()
 
-    '    Throw New NotImplementedException()
-    'End Function
+        While reader.Peek <> -1
+            stateMachine.Transform(Convert.ToChar(reader.Read()))
+        End While
+        Return stateMachine.OperationString
+    End Function
 
     Private Function RotateClockwise(pixels As Integer(,)) As Integer(,)
         Dim mapPixelRotateClockwise As MapPixel =
