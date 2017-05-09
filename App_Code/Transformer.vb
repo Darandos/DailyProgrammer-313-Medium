@@ -1,4 +1,6 @@
-﻿Public Module Transformer
+﻿Option Strict On
+
+Public Module Transformer
     Public Function RotateClockwise(pixels As Integer(,)) As Integer(,)
         Dim mapPixelRotateClockwise As MapPixel =
             Function(lPixels As Integer(,), y As Integer, x As Integer, ySize As Integer, xSize As Integer,
@@ -117,15 +119,15 @@
                     Throw New ArgumentNullException("lMaxPixelValue")
                 End If
 
-                Dim halfMax As Decimal = maxPixelValue / 2
-                Dim newPixel As Integer = (lPixels(y, x) - halfMax) * 1.1 + halfMax
+                Dim halfMax As Double = maxPixelValue / 2
+                Dim newPixel As Integer = CInt((lPixels(y, x) - halfMax) * 1.1 + halfMax)
                 If newPixel < 0 Then
                     newPixel = 0
                 ElseIf newPixel > maxPixelValue Then
                     newPixel = maxPixelValue
                 End If
 
-                Return Math.Round(newPixel)
+                Return newPixel
             End Function
 
         Return Transform(pixels, mapPixelIncreaseContrast)
@@ -139,10 +141,10 @@
                     Throw New ArgumentNullException("lMaxPixelValue")
                 End If
 
-                Dim halfMax As Decimal = maxPixelValue / 2
-                Dim newPixel As Integer = (lPixels(y, x) - halfMax) / 1.1 + halfMax
+                Dim halfMax As Double = maxPixelValue / 2
+                Dim newPixel As Integer = CInt((lPixels(y, x) - halfMax) / 1.1 + halfMax)
 
-                Return Math.Round(newPixel)
+                Return newPixel
             End Function
 
         Return Transform(pixels, mapPixelIncreaseContrast)

@@ -1,4 +1,6 @@
-﻿Public Class BasicOperationState
+﻿Option Strict On
+
+Public Class BasicOperationState
 
     Private _currentState As State = State.Original
     Private _transformationTable(System.Enum.GetNames(GetType(State)).Length - 1) As Dictionary(Of Char, State)
