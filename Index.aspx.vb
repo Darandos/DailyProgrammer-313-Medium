@@ -26,8 +26,22 @@ Public Class Index_aspx
                 Case "H"c
                     pixels = FlipHorizontal(pixels)
                 Case "V"c
-                    pixels = FlipVertical(pixels)
-            End Select
+					pixels = FlipVertical(pixels)
+				Case "E"c
+					pixels = Enlarge(pixels)
+				Case "S"c
+					pixels = Shrink(pixels)
+				Case "B"c
+					pixels = Brighten(pixels)
+				Case "D"c
+					pixels = Darken(pixels)
+				Case "C"c
+					pixels = IncreaseContrast(pixels, maxPixelValue)
+				Case "W"c
+					pixels = DecreaseContrast(pixels, maxPixelValue)
+				Case "N"c
+					pixels = Negative(pixels, maxPixelValue)
+			End Select
             numTransformations += 1
         End While
 
