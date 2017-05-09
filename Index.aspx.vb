@@ -47,10 +47,15 @@ Public Class Index_aspx
 
         Dim output As New StringBuilder()
         output.AppendLine(String.Format("P2 {0} {1} {2}", pixels.GetLength(1), pixels.GetLength(0), maxPixelValue))
-        For Each pixel As Integer In pixels
-            output.AppendLine(CStr(pixel))
-        Next
-        Results.InnerText = output.ToString()
+		For Each pixel As Integer In pixels
+			If pixel > maxPixelValue Then
+				pixel = maxPixelValue
+			ElseIf pixel < 0 Then
+				pixel = 0
+			End If
+			output.AppendLine(CStr(pixel))
+		Next
+		Results.InnerText = output.ToString()
         NumTransformationsLabel.Text = CStr(numTransformations)
     End Sub
 
