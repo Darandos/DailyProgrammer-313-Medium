@@ -128,8 +128,8 @@ Public Module Transformer
 				Return newPixel
 			End Function
 
-		Return Transform(pixels, mapPixelIncreaseContrast)
-    End Function
+		Return Transform(pixels, mapPixelIncreaseContrast, maxPixelValue:=maxPixelValue)
+	End Function
 
     Public Function DecreaseContrast(pixels As Integer(,), maxPixelValue As Integer) As Integer(,)
         Dim mapPixelIncreaseContrast As MapPixel =
@@ -145,8 +145,8 @@ Public Module Transformer
                 Return newPixel
             End Function
 
-        Return Transform(pixels, mapPixelIncreaseContrast)
-    End Function
+		Return Transform(pixels, mapPixelIncreaseContrast, maxPixelValue:=maxPixelValue)
+	End Function
 
     Private Function Transform(pixels As Integer(,),
                                callback As MapPixel,
