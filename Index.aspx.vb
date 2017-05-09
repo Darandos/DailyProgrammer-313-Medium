@@ -83,13 +83,13 @@ Public Class Index_aspx
 
 		For Each operationPair As Char() In New Char()() {({"E"c, "S"c}), ({"B"c, "D"c}), ({"C"c, "W"c})}
 			Dim netOperations As String = SimplifyInverseOperations(operations, operationPair(0), operationPair(1))
-			operations.Replace(Convert.ToString(operationPair(0)), String.Empty)
-			operations.Replace(Convert.ToString(operationPair(1)), String.Empty)
+			operations = operations.Replace(Convert.ToString(operationPair(0)), String.Empty)
+			operations = operations.Replace(Convert.ToString(operationPair(1)), String.Empty)
 			bonus2operations += netOperations
 		Next
 
 		Dim grossNegatives As Integer = New Regex("N").Matches(operations).Count
-		operations.Replace("N", String.Empty)
+		operations = operations.Replace("N", String.Empty)
 		If grossNegatives Mod 2 = 1 Then
 			bonus2operations += "N"
 		End If
