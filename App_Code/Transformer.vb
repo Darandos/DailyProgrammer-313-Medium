@@ -75,10 +75,10 @@ Public Module Transformer
                 Return sum \ 4
             End Function
 
-        Dim newXSize As Integer = pixels.GetLength(1) \ 2 - 1
-        Dim newYSize As Integer = pixels.GetLength(0) \ 2 - 1
+		Dim newXSize As Integer = pixels.GetLength(1) \ 2
+		Dim newYSize As Integer = pixels.GetLength(0) \ 2
 
-        Return Transform(pixels, mapPixelShrink, newXSize, newYSize)
+		Return Transform(pixels, mapPixelShrink, newXSize, newYSize)
     End Function
 
     Public Function Negative(pixels As Integer(,), maxPixelValue As Integer) As Integer(,)
