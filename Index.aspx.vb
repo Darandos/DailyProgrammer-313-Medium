@@ -79,17 +79,19 @@ Public Class Index_aspx
     End Function
 
 	Private Function SimplifyOperations(operations As String) As String
+		Dim bonus2operations As String = String.Empty
+
 		For Each operationPair As Char() In New Char()() {({"E"c, "S"c}), ({"B"c, "D"c}), ({"C"c, "W"c})}
 			Dim netOperations As String = SimplifyInverseOperations(operations, operationPair(0), operationPair(1))
 			operations.Replace(Convert.ToString(operationPair(0)), String.Empty)
 			operations.Replace(Convert.ToString(operationPair(1)), String.Empty)
-			operations += netOperations
+			bonus2operations += netOperations
 		Next
 
 		Dim grossNegatives As Integer = New Regex("N").Matches(operations).Count
 		operations.Replace("N", String.Empty)
 		If grossNegatives Mod 2 = 1 Then
-			operations += "N"
+			bonus2operations += "N"
 		End If
 
 		Dim reader As StringReader = New StringReader(operations)
@@ -98,7 +100,7 @@ Public Class Index_aspx
 		While reader.Peek <> -1
 			stateMachine.Transform(Convert.ToChar(reader.Read()))
 		End While
-		Return stateMachine.OperationString
+		Return stateMachine.OperationString + bonus2operations
 	End Function
 
 	Private Function SimplifyInverseOperations(operationsToPerform As String, operation1 As Char, operation2 As Char) As String
