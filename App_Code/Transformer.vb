@@ -1,5 +1,8 @@
 ﻿Option Strict On
 
+' TODO Change signature of MapPixel
+'		If parameters other than x and y are in scope, we don't need to pass them
+
 Public Module Transformer
     Public Function RotateClockwise(pixels As Integer(,)) As Integer(,)
         Dim mapPixelRotateClockwise As MapPixel =
@@ -54,10 +57,10 @@ Public Module Transformer
                 Return lPixels(y \ 2, x \ 2)
             End Function
 
-        Dim newXSize As Integer = pixels.GetLength(1) * 2 - 1
-        Dim newYSize As Integer = pixels.GetLength(0) * 2 - 1
+		Dim newXSize As Integer = pixels.GetLength(1) * 2
+		Dim newYSize As Integer = pixels.GetLength(0) * 2
 
-        Return Transform(pixels, mapPixelEnlarge, newXSize, newYSize)
+		Return Transform(pixels, mapPixelEnlarge, newXSize, newYSize)
     End Function
 
     Public Function Shrink(pixels As Integer(,)) As Integer(,)
