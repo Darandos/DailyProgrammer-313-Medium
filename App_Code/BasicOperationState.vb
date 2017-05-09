@@ -90,8 +90,8 @@ Public Class BasicOperationState
         Try
             _currentState = _transformationTable(_currentState).Item(operation)
         Catch ex As KeyNotFoundException
-            Console.WriteLine("{0} is not a valid operation", operation)
-        End Try
+			Console.WriteLine("{0} is not a valid basic operation", operation)
+		End Try
     End Sub
 
 End Class
