@@ -1,4 +1,6 @@
-﻿Public Enum State
+﻿Option Strict On
+
+Public Enum State
     Original
     R
     L

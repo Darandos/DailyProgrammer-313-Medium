@@ -1,4 +1,6 @@
-﻿Public Class BasicOperationState
+﻿Option Strict On
+
+Public Class BasicOperationState
 
     Private _currentState As State = State.Original
     Private _transformationTable(System.Enum.GetNames(GetType(State)).Length - 1) As Dictionary(Of Char, State)
@@ -88,8 +90,8 @@
         Try
             _currentState = _transformationTable(_currentState).Item(operation)
         Catch ex As KeyNotFoundException
-            Console.WriteLine("{0} is not a valid operation", operation)
-        End Try
+			Console.WriteLine("{0} is not a valid basic operation", operation)
+		End Try
     End Sub
 
 End Class
