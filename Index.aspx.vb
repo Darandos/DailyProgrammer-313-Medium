@@ -64,13 +64,39 @@ Public Class Index_aspx
         Return result
     End Function
 
-    Private Function SimplifyOperations(operations As String) As String
-        Dim reader As StringReader = New StringReader(operations)
-        Dim stateMachine As New BasicOperationState()
+	Private Function SimplifyOperations(operations As String) As String
+		For Each operationPair As Char() In New Char()() {({"E"c, "S"c}), ({"B"c, "D"c}), ({"C"c, "W"c})}
+			Dim netOperations As String = SimplifyInverseOperations(operations, operationPair(0), operationPair(1))
+			operations.Replace(Convert.ToString(operationPair(0)), String.Empty)
+			operations.Replace(Convert.ToString(operationPair(1)), String.Empty)
+			operations += netOperations
+		Next
 
-        While reader.Peek <> -1
-            stateMachine.Transform(Convert.ToChar(reader.Read()))
-        End While
-        Return stateMachine.OperationString
-    End Function
+		Dim grossNegatives As Integer = New Regex("N").Matches(operations).Count
+		operations.Replace("N", String.Empty)
+		If grossNegatives Mod 2 = 1 Then
+			operations += "N"
+		End If
+
+		Dim reader As StringReader = New StringReader(operations)
+		Dim stateMachine As New BasicOperationState()
+
+		While reader.Peek <> -1
+			stateMachine.Transform(Convert.ToChar(reader.Read()))
+		End While
+		Return stateMachine.OperationString
+	End Function
+
+	Private Function SimplifyInverseOperations(operationsToPerform As String, operation1 As Char, operation2 As Char) As String
+		Dim regex1 As New Regex(operation1)
+		Dim timesToPerformOperation1 = regex1.Matches(operationsToPerform).Count
+
+		Dim regex2 As New Regex(operation2)
+		Dim timesToPerformOperation2 = regex2.Matches(operationsToPerform).Count
+
+		Dim netOperation As Char = If(timesToPerformOperation1 - timesToPerformOperation2 > 0, operation1, operation2)
+		Dim netTimesToPerform As Integer = Math.Abs(timesToPerformOperation1 - timesToPerformOperation2)
+
+		Return New String(netOperation, netTimesToPerform)
+	End Function
 End Class
