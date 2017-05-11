@@ -3,29 +3,30 @@
 Imports System.IO
 
 Public Class Index_aspx
-    Inherits Page
+	Inherits Page
 
-    Protected Sub Submit_Click(sender As Object, e As EventArgs) Handles Submit.Click
+	Protected Sub Submit_Click(sender As Object, e As EventArgs) Handles Submit.Click
 		Dim pixels As Pixel(,)
 		Dim maxPixelValue As Integer
-        Try
-            pixels = ParsePgm(Pgm.Text, maxPixelValue)
-        Catch ex As ArgumentException
-            Results.InnerText = ex.Message
-            Exit Sub
-        End Try
+		Dim isPpm As Boolean
+		Try
+			pixels = ParsePnm(Pgm.Text, maxPixelValue, isPpm)
+		Catch ex As ArgumentException
+			Results.InnerText = ex.Message
+			Exit Sub
+		End Try
 
-        Dim reader As StringReader = New StringReader(SimplifyOperations(Operations.Value.ToUpper()))
-        Dim numTransformations As Integer = 0
-        While reader.Peek <> -1
-            Select Case Convert.ToChar(reader.Read())
-                Case "R"c
-                    pixels = RotateClockwise(pixels)
-                Case "L"c
-                    pixels = RotateCounterClockwise(pixels)
-                Case "H"c
-                    pixels = FlipHorizontal(pixels)
-                Case "V"c
+		Dim reader As StringReader = New StringReader(SimplifyOperations(Operations.Value.ToUpper()))
+		Dim numTransformations As Integer = 0
+		While reader.Peek <> -1
+			Select Case Convert.ToChar(reader.Read())
+				Case "R"c
+					pixels = RotateClockwise(pixels)
+				Case "L"c
+					pixels = RotateCounterClockwise(pixels)
+				Case "H"c
+					pixels = FlipHorizontal(pixels)
+				Case "V"c
 					pixels = FlipVertical(pixels)
 				Case "E"c
 					pixels = Enlarge(pixels)
@@ -52,11 +53,11 @@ Public Class Index_aspx
 						pixel.Negative(maxPixelValue)
 					Next
 			End Select
-            numTransformations += 1
-        End While
+			numTransformations += 1
+		End While
 
-        Dim output As New StringBuilder()
-        output.AppendLine(String.Format("P2 {0} {1} {2}", pixels.GetLength(1), pixels.GetLength(0), maxPixelValue))
+		Dim output As New StringBuilder()
+		output.AppendLine($"{If(isPpm, "P3", "P2")} {pixels.GetLength(1)} {pixels.GetLength(0)} {maxPixelValue}")
 		For Each pixel As Pixel In pixels
 			For Each colour In {"Red", "Green", "Blue"}
 				Dim subpixel As Integer = CInt(CallByName(pixel, colour, CallType.Get))
@@ -68,17 +69,17 @@ Public Class Index_aspx
 				output.AppendLine(CStr(subpixel))
 			Next
 		Next
-			Results.InnerText = output.ToString()
-        NumTransformationsLabel.Text = CStr(numTransformations)
-    End Sub
+		Results.InnerText = output.ToString()
+		NumTransformationsLabel.Text = CStr(numTransformations)
+	End Sub
 
-	Private Function ParsePnm(pnm As String, Optional ByRef max As Integer = 0) As Pixel(,)
+	Private Function ParsePnm(pnm As String, Optional ByRef max As Integer = 0,
+							  Optional ByRef isPpm As Boolean = False) As Pixel(,)
 		Dim reader As New StringReader(pnm)
 
 		Dim firstLine As String() = reader.ReadLine().Split(" "c)
 
 		Dim xSize, ySize As Integer
-		Dim isPpm As Boolean = False
 		Try
 			isPpm = firstLine(0).Equals("P3")
 			xSize = CInt(firstLine(1))
