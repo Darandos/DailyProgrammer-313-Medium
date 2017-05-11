@@ -58,7 +58,7 @@ Public Module Transformer
 		Return Transform(pixels, mapPixelEnlarge, newXSize, newYSize)
     End Function
 
-    Public Function Shrink(pixels As Integer(,)) As Integer(,)
+	Public Function Shrink(pixels As Integer(,)) As Integer(,)
 		Dim mapPixelShrink As MapPixel =
 			Function(y As Integer, x As Integer, ySize As Integer, xSize As Integer) As Integer
 				Dim sum As Integer = pixels(y * 2, x * 2)
@@ -73,57 +73,6 @@ Public Module Transformer
 		Dim newYSize As Integer = pixels.GetLength(0) \ 2
 
 		Return Transform(pixels, mapPixelShrink, newXSize, newYSize)
-    End Function
-
-    Public Function Negative(pixels As Integer(,), maxPixelValue As Integer) As Integer(,)
-		Dim mapPixelNegative As MapPixel =
-			Function(y As Integer, x As Integer, ySize As Integer, xSize As Integer) As Integer
-				Return maxPixelValue - pixels(y, x)
-			End Function
-
-		Return Transform(pixels, mapPixelNegative)
-	End Function
-
-    Public Function Brighten(pixels As Integer(,)) As Integer(,)
-		Dim mapPixelBrighten As MapPixel =
-			Function(y As Integer, x As Integer, ySize As Integer, xSize As Integer)
-				Return pixels(y, x) + 10
-			End Function
-
-		Return Transform(pixels, mapPixelBrighten)
-    End Function
-
-    Public Function Darken(pixels As Integer(,)) As Integer(,)
-		Dim mapPixelDarken As MapPixel =
-			Function(y As Integer, x As Integer, ySize As Integer, xSize As Integer) As Integer
-				Return pixels(y, x) - 10
-			End Function
-
-		Return Transform(pixels, mapPixelDarken)
-    End Function
-
-    Public Function IncreaseContrast(pixels As Integer(,), maxPixelValue As Integer) As Integer(,)
-		Dim mapPixelIncreaseContrast As MapPixel =
-			Function(y As Integer, x As Integer, ySize As Integer, xSize As Integer) As Integer
-				Dim halfMax As Double = maxPixelValue / 2
-				Dim newPixel As Integer = CInt((pixels(y, x) - halfMax) * 1.1 + halfMax)
-
-				Return newPixel
-			End Function
-
-		Return Transform(pixels, mapPixelIncreaseContrast)
-	End Function
-
-    Public Function DecreaseContrast(pixels As Integer(,), maxPixelValue As Integer) As Integer(,)
-		Dim mapPixelIncreaseContrast As MapPixel =
-			Function(y As Integer, x As Integer, ySize As Integer, xSize As Integer) As Integer
-				Dim halfMax As Double = maxPixelValue / 2
-				Dim newPixel As Integer = CInt((pixels(y, x) - halfMax) / 1.1 + halfMax)
-
-				Return newPixel
-			End Function
-
-		Return Transform(pixels, mapPixelIncreaseContrast)
 	End Function
 
 	Private Function Transform(pixels As Integer(,),
