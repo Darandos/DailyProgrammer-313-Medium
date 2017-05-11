@@ -16,6 +16,24 @@ Public Class Pixel
 		Me.New(value, value, value)
 	End Sub
 
+	Public Shared Function Average(ParamArray pixels As Pixel()) As Pixel
+		Dim red As Integer = 0
+		Dim green As Integer = 0
+		Dim blue As Integer = 0
+
+		For Each pixel In pixels
+			red += pixel.Red
+			green += pixel.Green
+			blue += pixel.Blue
+		Next
+
+		red = CInt(red / pixels.Length)
+		green = CInt(green / pixels.Length)
+		blue = CInt(blue / pixels.Length)
+
+		Return New Pixel(red, green, blue)
+	End Function
+
 	Public Sub Negative(maxPixelValue As Integer)
 		setAll(Function(value) maxPixelValue - value)
 	End Sub
