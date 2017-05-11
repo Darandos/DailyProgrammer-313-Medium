@@ -1,8 +1,5 @@
 ﻿Option Strict On
 
-' TODO Change signature of MapPixel
-'		If parameters other than x and y are in scope, we don't need to pass them
-
 Public Module Transformer
 	Public Function RotateClockwise(pixels As Integer(,)) As Integer(,)
 		Dim newXSize As Integer = pixels.GetLength(0)

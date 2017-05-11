@@ -6,8 +6,8 @@ Public Class Index_aspx
     Inherits Page
 
     Protected Sub Submit_Click(sender As Object, e As EventArgs) Handles Submit.Click
-        Dim pixels As Integer(,)
-        Dim maxPixelValue As Integer
+		Dim pixels As Pixel(,)
+		Dim maxPixelValue As Integer
         Try
             pixels = ParsePgm(Pgm.Text, maxPixelValue)
         Catch ex As ArgumentException
@@ -47,41 +47,48 @@ Public Class Index_aspx
 
         Dim output As New StringBuilder()
         output.AppendLine(String.Format("P2 {0} {1} {2}", pixels.GetLength(1), pixels.GetLength(0), maxPixelValue))
-		For Each pixel As Integer In pixels
-			If pixel > maxPixelValue Then
-				pixel = maxPixelValue
-			ElseIf pixel < 0 Then
-				pixel = 0
-			End If
-			output.AppendLine(CStr(pixel))
+		For Each pixel As Pixel In pixels
+			For Each colour In {"Red", "Green", "Blue"}
+				Dim subpixel As Integer = CInt(CallByName(pixel, colour, CallType.Get))
+				If subpixel > maxPixelValue Then
+					subpixel = maxPixelValue
+				ElseIf subpixel < 0 Then
+					subpixel = 0
+				End If
+				output.AppendLine(CStr(subpixel))
+			Next
 		Next
-		Results.InnerText = output.ToString()
+			Results.InnerText = output.ToString()
         NumTransformationsLabel.Text = CStr(numTransformations)
     End Sub
 
-    Private Function ParsePgm(pgm As String, Optional ByRef max As Integer = 0) As Integer(,)
-        Dim reader As New StringReader(pgm)
+	Private Function ParsePnm(pnm As String, Optional ByRef max As Integer = 0) As Pixel(,)
+		Dim reader As New StringReader(pnm)
 
-        Dim firstLine As String() = reader.ReadLine().Split(" "c)
+		Dim firstLine As String() = reader.ReadLine().Split(" "c)
 
-        Dim xSize, ySize As Integer
-        Try
-            xSize = CInt(firstLine(1))
-            ySize = CInt(firstLine(2))
-            max = CInt(firstLine(3))
-        Catch ex As IndexOutOfRangeException
-            Throw New ArgumentException("Invalid PGM format", ex)
-        End Try
+		Dim xSize, ySize As Integer
+		Dim isPpm As Boolean = False
+		Try
+			isPpm = firstLine(0).Equals("P3")
+			xSize = CInt(firstLine(1))
+			ySize = CInt(firstLine(2))
+			max = CInt(firstLine(3))
+		Catch ex As IndexOutOfRangeException
+			Throw New ArgumentException("Invalid PNM format", ex)
+		End Try
 
-        Dim result(ySize - 1, xSize - 1) As Integer
-        For y As Integer = 0 To ySize - 1
-            For x As Integer = 0 To xSize - 1
-                result(y, x) = CInt(reader.ReadLine())
-            Next
-        Next
+		Dim result(ySize - 1, xSize - 1) As Pixel
+		For y As Integer = 0 To ySize - 1
+			For x As Integer = 0 To xSize - 1
+				result(y, x) = If(isPpm,
+					New Pixel(CInt(reader.ReadLine()), CInt(reader.ReadLine()), CInt(reader.ReadLine())),
+					New Pixel(CInt(reader.ReadLine())))
+			Next
+		Next
 
-        Return result
-    End Function
+		Return result
+	End Function
 
 	Private Function SimplifyOperations(operations As String) As String
 		Dim bonus2operations As String = String.Empty
