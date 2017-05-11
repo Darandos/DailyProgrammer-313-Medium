@@ -32,15 +32,25 @@ Public Class Index_aspx
 				Case "S"c
 					pixels = Shrink(pixels)
 				Case "B"c
-					pixels = Brighten(pixels)
+					For Each pixel In pixels
+						pixel.Brighten()
+					Next
 				Case "D"c
-					pixels = Darken(pixels)
+					For Each pixel In pixels
+						pixel.Darken()
+					Next
 				Case "C"c
-					pixels = IncreaseContrast(pixels, maxPixelValue)
+					For Each pixel In pixels
+						pixel.IncreaseContrast(maxPixelValue)
+					Next
 				Case "W"c
-					pixels = DecreaseContrast(pixels, maxPixelValue)
+					For Each pixel In pixels
+						pixel.DecreaseContrast(maxPixelValue)
+					Next
 				Case "N"c
-					pixels = Negative(pixels, maxPixelValue)
+					For Each pixel In pixels
+						pixel.Negative(maxPixelValue)
+					Next
 			End Select
             numTransformations += 1
         End While
